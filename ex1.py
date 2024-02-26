@@ -100,7 +100,7 @@ class AddressBook(UserDict): # Клас для зберігання та упр�
                     upcoming_birthdays.append(user_info)
         return upcoming_birthdays
 
-def input_error(func): # Function - decorator for errors handling 
+def input_error(func): # Function - decorator for errors handling
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -117,12 +117,15 @@ def input_error(func): # Function - decorator for errors handling
 @input_error
 def add_birthday(args, book):
     name, birthday = args
-    record = book.find(name)
-    if record:
-        record.add_birthday(birthday)
-        print(f"Birthday added for {name}.")
-    else:
-        print(f"Contact {name} not found.")
+    try:
+        record = book.find(name)
+        if record:
+            record.add_birthday(birthday)
+            print(f"Birthday added for {name}.")
+        else:
+            print(f"Contact {name} not found.")
+    except ValueError as e:
+        print(e)
 
 @input_error
 def show_birthday(args, book):
@@ -145,7 +148,7 @@ def birthdays(args, book):
     else:
         print("No upcoming birthdays.")
 
-def parse_input(user_input): # Parse input function 
+def parse_input(user_input): # Parse input function
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
     return cmd, *args
